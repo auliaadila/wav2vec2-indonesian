@@ -85,12 +85,12 @@ class ModelArguments:
             "vectors will be masked along the time axis. This is only relevant if ``apply_spec_augment is True``."
         },
     )
-    gradient_checkpointing: Optional[bool] = field(
-        default=True,
-        metadata={
-            "help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."
-        },
-    )
+    # gradient_checkpointing: Optional[bool] = field(
+    #     default=True,
+    #     metadata={
+    #         "help": "If True, use gradient checkpointing to save memory at the expense of slower backward pass."
+    #     },
+    # )
     layerdrop: Optional[float] = field(default=0.0, metadata={"help": "The LayerDrop probability."})
 
 
@@ -417,7 +417,8 @@ def main():
         hidden_dropout=model_args.hidden_dropout,
         feat_proj_dropout=model_args.feat_proj_dropout,
         mask_time_prob=model_args.mask_time_prob,
-        gradient_checkpointing=model_args.gradient_checkpointing,
+        #gradient_checkpointing=model_args.gradient_checkpointing,
+        gradient_checkpointing=True,
         layerdrop=model_args.layerdrop,
         ctc_loss_reduction="mean",
         pad_token_id=processor.tokenizer.pad_token_id,
@@ -458,7 +459,9 @@ def main():
         assert (
             len(set(batch["sampling_rate"])) == 1
         ), f"Make sure all inputs have the same sampling rate of {processor.feature_extractor.sampling_rate}."
-        batch["input_values"] = processor(batch["speech"], sampling_rate=batch["sampling_rate"][0]).input_values
+        # batch["input_values"] = processor(batch["speech"], sampling_rate=batch["sampling_rate"][0]).input_values
+        batch["input_values"] = processor(batch["speech"], sampling_rate=batch["sampling_rate"][0],padding=True).input_values
+        
         # Setup the processor for targets
         with processor.as_target_processor():
             batch["labels"] = processor(batch["target_text"]).input_ids

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-python run_common_voice.py \
+python3 run_common_voice.py \
     --model_name_or_path="facebook/wav2vec2-large-xlsr-53" \
     --dataset_config_name="id" \
-    --output_dir=/workspace/output_models/wav2vec2-large-xlsr-indonesian \
-    --cache_dir=/workspace/output_models \
+    --output_dir=/raid/data/m13519140/asr-model/output-models/wav2vec2-large-xlsr-indonesian \
+    --cache_dir=/raid/data/m13519140/asr-model/output_models \
     --overwrite_output_dir \
     --num_train_epochs="60" \
     --per_device_eval_batch_size="8" \
@@ -24,8 +24,8 @@ python run_common_voice.py \
     --activation_dropout="0.055" \
     --hidden_dropout="0.047" \
     --mask_time_prob="0.4" \
-    --gradient_checkpointing \
     --do_train --do_eval \
     --gradient_accumulation_steps="2" \
-    --cache_dir=/workspace/data \
+    --cache_dir=/raid/data/m13519140/asr-model/data \
     --dataloader_num_workers="8"
+
